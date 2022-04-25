@@ -41,14 +41,5 @@ class UserViewSet(mixins.CreateModelMixin,
         return(self.request.user)
 
 
-#@api_view(['POST'])
-#@permission_classes([AllowAny])
-#def get_confirmation_code(request):
-    #"""API создает получение JWT токена"""
-    #serializer = ConfirmationSerializer(data=request.data)
-    #serializer.is_valid(raise_exception=True)
-    #email = serializer.data.get('email')
-    #password = serializer.data.get('password')
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
