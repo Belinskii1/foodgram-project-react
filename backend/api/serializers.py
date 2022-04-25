@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from users.models import User
 
@@ -23,3 +24,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """возвращает токен доступа JWT"""
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['access'] = str(refresh.access_token)
+        return data['access']
