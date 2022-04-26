@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.password_validation import validate_password
 
 from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         extra_kwargs = {
@@ -26,10 +26,13 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    """возвращает токен доступа JWT"""
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
-        data['access'] = str(refresh.access_token)
-        return data['access']
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_new_password(self, value):
+        validate_password(value)
+        return value

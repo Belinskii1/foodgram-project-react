@@ -1,13 +1,10 @@
 from django.shortcuts import render
-from rest_framework import filters, viewsets, mixins, status, views
+from rest_framework import filters, viewsets, mixins, status, views, generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework_simplejwt.views import TokenObtainPairView
 
-
-from .serializers import UserSerializer, MyTokenObtainPairSerializer
+from .serializers import UserSerializer, ChangePasswordSerializer
 from users.models import User
 
 
@@ -16,15 +13,16 @@ class UserViewSet(mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
+    #permission_classes = (AllowAny,)
 
     def get_queryset(self):
-        """переопредлеяет набор запросов"""
+        """для списка пользователей"""
         queryset = User.objects.all()
         return queryset
 
     def perform_create(self, serializer):
-        """переопределяем создание"""
+        """для создания пользователя"""
         if serializer.is_valid():
             serializer.save()
 
@@ -34,6 +32,7 @@ class UserViewSet(mixins.CreateModelMixin,
 
     def get_me(self, request):
         """получение профиля текущего пользователя"""
+        # нужно вынести в отдельную view
         user = request.user
         if request.method == 'GET':
             serializer = self.get_serializer(user)
@@ -41,5 +40,28 @@ class UserViewSet(mixins.CreateModelMixin,
         return(self.request.user)
 
 
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+class ChangePasswordView(views.APIView):
+    """
+    An endpoint for changing password.
+    """
+    permission_classes = (IsAuthenticated, )
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = ChangePasswordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            old_password = serializer.data.get("old_password")
+            if not self.object.check_password(old_password):
+                return Response({"old_password": ["Wrong password."]}, 
+                                status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
