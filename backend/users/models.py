@@ -48,7 +48,8 @@ class Follow(models.Model):
         ordering = ['-id']
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'following'], name='unique_follow'
+                fields=['user', 'following'],
+                name='unique_follow'
             ),
             models.CheckConstraint(
                 check=~models.Q(user=models.F('following')),
@@ -57,4 +58,3 @@ class Follow(models.Model):
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-
