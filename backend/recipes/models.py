@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Tags(models.Model):
+class Tag(models.Model):
     BLUE = '#0000FF'
     CORAL = '#FF7F50'
     GOLD = '#FFD700'
@@ -49,3 +49,39 @@ class Tags(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Ingredient(models.Model):
+    KG = 'кг'
+    G = 'г'
+    L = 'л'
+    ML = 'мл'
+    UNIT = 'шт'
+
+    MEANSUREMENT_UNIT_CHOISES = [
+        (KG, KG),
+        (G, G),
+        (L, L),
+        (ML, ML),
+        (UNIT, UNIT),
+    ]
+
+    name = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=False,
+        null=False,
+        verbose_name = 'Название Ингридиента'
+    )
+    measurement_unit = models.CharField(
+        choices=MEANSUREMENT_UNIT_CHOISES,
+        max_length=10,
+        verbose_name='единица измерения'
+    )
+
+    class Meta:
+        verbose_name = 'Ннгридиент'
+        verbose_name_plural = 'Ингридиенты'
+
+    def __str__(self):
+        return self.name   
