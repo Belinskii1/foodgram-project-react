@@ -2,7 +2,8 @@ import os
 import base64
 from django.core import validators
 from django.db import models
-from django_base64field.fields import Base64Field
+
+from users.models import User
 
 def image_as_base64(image_file, format='png'):
     if not os.path.isfile(image_file):
@@ -100,10 +101,16 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipes',
+        verbose_name='Автор рецепта'
+    )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientRecipe',
-        verbose_name = 'ингридиенты'
+        verbose_name = 'ингредиенты'
     )
     tags = models.ManyToManyField(
         Tag,

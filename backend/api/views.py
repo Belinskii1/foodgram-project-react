@@ -1,8 +1,8 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from recipes.models import Tag, Ingredient
-from .serializers import TagSerializer, IngredientSerializer
+from recipes.models import Tag, Ingredient, Recipe
+from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer
 from .filters import IngredientSearchFilter
 
 
@@ -16,6 +16,11 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (AllowAny,)
-    #filter_backends = (IngredientSearchFilter,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^name',)
+
+
+class RecipeViewSet(viewsets.ModelViewSet):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = (AllowAny,)
