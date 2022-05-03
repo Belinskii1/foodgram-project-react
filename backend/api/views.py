@@ -24,3 +24,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (AllowAny,)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
