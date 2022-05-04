@@ -4,10 +4,11 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
-
 from .models import Tag, Ingredient, Recipe, Favorite
 from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, FavoriteRecipeSerializer
-from .filters import IngredientSearchFilter
+from .filters import IngredientSearchFilter, RecipeFilter
+from .pagination import RecipePagination
+from .permissions import IsOwnerOrReadOnly
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -47,7 +48,9 @@ class RecipesFavoriteViewSet(views.APIView):
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = (AllowAny,)
+    pagination_class = RecipePagination
+    filter_class = RecipeFilter
+    permission_classes = [IsOwnerOrReadOnly,]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

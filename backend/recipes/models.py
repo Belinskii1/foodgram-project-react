@@ -253,3 +253,6 @@ class ShoppingCart(models.Model):
     def __str__(self):
         return (f'У пользователя {self.user.name}'
                 f' в списке покупок {self.recipe.name}')
+
+
+
