@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .models import Follow, User
 from .serializers import FollowListSerializer, UserFollowSerializer
-from api.pagination import UserFollowPagination
+from .pagination import UserFollowPagination
 
 
 class FollowListAPIView(generics.ListAPIView):

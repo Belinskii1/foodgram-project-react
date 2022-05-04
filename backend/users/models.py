@@ -29,7 +29,8 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('username',)
 
-    class Meta:
+    class Meta:        
+        ordering = ['id']
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -48,7 +49,7 @@ class Follow(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'following'],
