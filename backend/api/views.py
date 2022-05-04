@@ -6,6 +6,7 @@ from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer
 from .filters import IngredientSearchFilter
 
 
+
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -27,3 +28,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
