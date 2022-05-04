@@ -2,9 +2,10 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
 from drf_extra_fields.fields import Base64ImageField
-from users.serializers import CustomUserSerializer
+from rest_framework.validators import UniqueTogetherValidator
 
-from recipes.models import Tag, Ingredient, Recipe, TagRecipe, IngredientRecipe
+from users.serializers import CustomUserSerializer
+from .models import Tag, Ingredient, Recipe, TagRecipe, IngredientRecipe, Favorite
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -38,3 +39,40 @@ class RecipeSerializer(serializers.ModelSerializer):
             IngredientRecipe.objects.create(
                 name=current_ingredient, recipe=recipe)
         return recipe
+
+
+class RecipeRepresentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
+
+
+class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = ('user', 'recipe')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Favorite.objects.all(),
+                fields=('user', 'recipe'),
+                message=('Вы уже добавили этот рецепт в избранное!')
+            )
+        ]
+
+    def validate(self, data):
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        recipe = data['recipe']
+        if Favorite.objects.filter(user=request.user,
+                                   recipe=recipe).exists():
+            raise serializers.ValidationError(
+                'Вы уже добавили этот рецепт в избранное!'
+            )
+        return data
+
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        context = {'request': request}
+        return RecipeRepresentationSerializer(
+            instance.recipe, context=context).data

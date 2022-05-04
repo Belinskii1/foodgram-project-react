@@ -1,8 +1,12 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import generics, status, views
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
-from recipes.models import Tag, Ingredient, Recipe
-from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer
+
+from .models import Tag, Ingredient, Recipe, Favorite
+from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, FavoriteRecipeSerializer
 from .filters import IngredientSearchFilter
 
 
@@ -18,6 +22,26 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^name',)
+
+
+class RecipesFavoriteViewSet(views.APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def post(self, request, id):
+        data = {'user': request.user.id, 'recipe': id}
+        serializer = FavoriteRecipeSerializer(data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, id):
+        user = request.user
+        recipe = get_object_or_404(Recipe, id=id)
+        favorite = get_object_or_404(
+            Favorite, user=user, recipe=recipe
+        )
+        favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
