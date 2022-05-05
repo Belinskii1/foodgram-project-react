@@ -13,7 +13,7 @@ from .models import (Tag, Ingredient, Recipe,
                      Favorite, ShoppingCart, IngredientRecipe)
 from .serializers import (TagSerializer, IngredientSerializer,
                           RecipeSerializer, FavoriteRecipeSerializer,
-                          ShoppingCartSerializer)
+                          ShoppingCartSerializer, RecipeWriteSerializer)
 from .filters import IngredientSearchFilter, RecipeFilter
 from .pagination import RecipePagination
 from .permissions import IsOwnerOrReadOnly
@@ -39,6 +39,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = RecipePagination
     filter_class = RecipeFilter
     permission_classes = [IsOwnerOrReadOnly,]
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return RecipeSerializer
+        return RecipeWriteSerializer
 
     @action(methods=['post', 'delete'], detail=True,
             permission_classes=[IsAuthenticated])
