@@ -13,7 +13,5 @@ router_v1.register(r'ingredients', IngredientViewSet, basename="ingredients")
 router_v1.register(r'recipes', RecipeViewSet, basename="recipes")
 
 urlpatterns = [
-    path('recipes/<int:id>/favorite/', RecipesFavoriteViewSet.as_view(),
-         name='favorite'),
     path('', include(router_v1.urls)),
 ]
