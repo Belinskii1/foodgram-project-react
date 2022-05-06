@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=-m_u_@m_&7c5ntjxzz3(oyv!_sz981$k*-i835z@2ch-(-f_n'
+SECRET_KEY = (f'django-insecure-=-m_u_@m_&7c5ntjxz'
+              f'z3(oyv!_sz981$k*-i835z@2ch-(-f_n')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -144,10 +144,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    #'PAGE_SIZE': 5,
 } 
-
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -162,11 +159,3 @@ DJOSER = {
     },
     'HIDE_USERS': False,
 }
-
-
-#SIMPLE_JWT = {
-   #'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-   #'AUTH_HEADER_TYPES': ('Bearer',),
-   #'ROTATE_REFRESH_TOKENS': True,
-   #'BLACKLIST_AFTER_ROTATION': True,
-#}

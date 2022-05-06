@@ -1,22 +1,21 @@
-from urllib import response
-from rest_framework import viewsets, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import action
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from django.http import HttpResponse
 from reportlab.pdfgen import canvas
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
-from .models import (Tag, Ingredient, Recipe,
-                     Favorite, ShoppingCart, IngredientRecipe)
-from .serializers import (TagSerializer, IngredientSerializer,
-                          RecipeSerializer, FavoriteRecipeSerializer,
-                          ShoppingCartSerializer, RecipeWriteSerializer)
 from .filters import IngredientSearchFilter, RecipeFilter
+from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
+                     ShoppingCart, Tag)
 from .pagination import RecipePagination
 from .permissions import IsOwnerOrReadOnly
+from .serializers import (FavoriteRecipeSerializer, IngredientSerializer,
+                          RecipeSerializer, RecipeWriteSerializer,
+                          ShoppingCartSerializer, TagSerializer)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -38,7 +37,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = RecipePagination
     filter_class = RecipeFilter
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsOwnerOrReadOnly, ]
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
@@ -50,7 +49,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def favorite(self, request, pk):
         if request.method == 'POST':
             data = {'user': request.user.id, 'recipe': pk}
-            serializer = FavoriteRecipeSerializer(data=data, context={'request': request})
+            serializer = FavoriteRecipeSerializer(
+                data=data,
+                context={'request': request}
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -69,7 +71,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
             data = {'user': request.user.id, 'recipe': pk}
-            serializer = ShoppingCartSerializer(data=data, context={'request': request})
+            serializer = ShoppingCartSerializer(
+                data=data,
+                context={'request': request}
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

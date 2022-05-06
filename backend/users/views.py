@@ -1,17 +1,16 @@
-from django.shortcuts import render
-from rest_framework import generics, status, views
 from django.shortcuts import get_object_or_404
+from rest_framework import generics, status, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Follow, User
-from .serializers import FollowListSerializer, UserFollowSerializer
 from .pagination import UserFollowPagination
+from .serializers import FollowListSerializer, UserFollowSerializer
 
 
 class FollowListAPIView(generics.ListAPIView):
     pagination_class = UserFollowPagination
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
         user = request.user
@@ -25,14 +24,20 @@ class FollowListAPIView(generics.ListAPIView):
 
 
 class UserFollowApiView(views.APIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, ]
 
     def post(self, request, id):
         data = {'user': request.user.id, 'following': id}
-        serializer = UserFollowSerializer(data=data, context={'request': request})
+        serializer = UserFollowSerializer(
+            data=data,
+            context={'request': request}
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
 
     def delete(self, request, id):
         user = request.user

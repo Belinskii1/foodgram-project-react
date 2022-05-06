@@ -1,9 +1,11 @@
-import os
 import base64
+import os
+
 from django.core import validators
 from django.db import models
 
 from users.models import User
+
 
 def image_as_base64(image_file, format='png'):
     if not os.path.isfile(image_file):
@@ -44,7 +46,7 @@ class Tag(models.Model):
         unique=True,
         blank=False,
         null=False,
-        verbose_name = 'название Тега'
+        verbose_name='название Тега'
     )
     color = models.CharField(
         choices=COLOR_CHOICES,
@@ -56,6 +58,7 @@ class Tag(models.Model):
         unique=True,
         verbose_name='поле Slug'
     )
+
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
@@ -84,7 +87,7 @@ class Ingredient(models.Model):
         unique=True,
         blank=False,
         null=False,
-        verbose_name = 'название Ингридиента'
+        verbose_name='название Ингридиента'
     )
     measurement_unit = models.CharField(
         choices=MEANSUREMENT_UNIT_CHOISES,
@@ -97,7 +100,7 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ингридиенты'
 
     def __str__(self):
-        return self.name   
+        return self.name
 
 
 class Recipe(models.Model):
@@ -140,11 +143,11 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        verbose_name='Рецепт'
-        verbose_name_plural='Рецепты'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
-        return self.name  
+        return self.name
 
 
 class IngredientRecipe(models.Model):
@@ -188,11 +191,11 @@ class TagRecipe(models.Model):
         verbose_name="рецепт"
     )
 
-    class Meta: 
+    class Meta:
         constraints = [
             models.UniqueConstraint(fields=['tag', 'recipe'],
                                     name='unique_tag_recipe')
-        ]                    
+        ]
         verbose_name = 'Тег у рецепта'
         verbose_name_plural = 'Теги у рецептов'
 
@@ -241,6 +244,7 @@ class ShoppingCart(models.Model):
         related_name="shoppingcart",
         verbose_name="рецепт"
     )
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'recipe'],
