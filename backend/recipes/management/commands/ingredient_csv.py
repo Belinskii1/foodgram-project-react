@@ -12,7 +12,7 @@ class Command(BaseCommand):
             return
 
     def handle(self, *args, **options):
-        with open('./ingredients1.csv') as f:
+        with open('./ingredients.csv') as f:
             reader = csv.reader(f)
             for row in reader:
                 created = Ingredient.objects.get_or_create(
