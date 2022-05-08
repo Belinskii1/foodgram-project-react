@@ -68,30 +68,15 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    KG = 'кг'
-    G = 'г'
-    L = 'л'
-    ML = 'мл'
-    UNIT = 'шт'
-
-    MEANSUREMENT_UNIT_CHOISES = [
-        (KG, KG),
-        (G, G),
-        (L, L),
-        (ML, ML),
-        (UNIT, UNIT),
-    ]
-
     name = models.CharField(
-        max_length=20,
+        max_length=100,
         unique=True,
         blank=False,
         null=False,
         verbose_name='название Ингридиента'
     )
     measurement_unit = models.CharField(
-        choices=MEANSUREMENT_UNIT_CHOISES,
-        max_length=10,
+        max_length=40,
         verbose_name='единица измерения'
     )
 
