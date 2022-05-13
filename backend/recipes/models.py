@@ -1,6 +1,5 @@
 import base64
 import os
-
 from django.core import validators
 from django.db import models
 

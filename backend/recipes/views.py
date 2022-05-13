@@ -1,14 +1,14 @@
+# import reportlab
+# from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfgen import canvas
+# from reportlab.pdfbase import pdfmetrics
+# from reportlab.pdfbase.ttfonts import TTFont
+# from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-import reportlab
-from django.conf import settings
 
 from .filters import IngredientSearchFilter, RecipeFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
@@ -121,7 +121,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     #             }
     #         else:
     #             final_list[name]['amount'] += item[2]
-    #     reportlab.rl_config.TTFSearchPath.append(str(settings.BASE_DIR) + '/backend/libes/fonts')
+    #     reportlab.rl_config.TTFSearchPath.append(
+    #              str(settings.BASE_DIR) + '/backend/libes/fonts'
+    #             )
     #     pdfmetrics.registerFont(
     #         TTFont('tahoma', 'tahoma.ttf', 'UTF-8'))
     #     response = HttpResponse(content_type='application/pdf')
