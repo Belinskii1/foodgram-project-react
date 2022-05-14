@@ -107,7 +107,7 @@ class Recipe(models.Model):
     image = models.ImageField(
         upload_to='images/',
         verbose_name='картинка'
-        )
+    )
     name = models.CharField(
         max_length=70,
         unique=True,
@@ -122,7 +122,7 @@ class Recipe(models.Model):
         validators=(
             validators.MinValueValidator(
                 0, message='Укажите время приготовления блюда'),
-            ),
+        ),
         verbose_name='Время приготовления'
     )
 
