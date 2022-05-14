@@ -1,6 +1,7 @@
 name: foodgram_workflow
 
 on: [push]
+
 jobs:
   tests:
     runs-on: ubuntu-latest
