@@ -24,9 +24,9 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        return Follow.objects.filter(user=request.user, following=obj).exists()
+        if request.user.is_authenticated:
+            return Follow.objects.filter(user=request.user,
+                                         following=obj).exists()
 
 
 class FollowRecipesSerializer(serializers.ModelSerializer):
@@ -47,9 +47,9 @@ class FollowListSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        return Follow.objects.filter(user=request.user, following=obj).exists()
+        if request.user.is_authenticated:
+            return Follow.objects.filter(user=request.user,
+                                         following=obj).exists()
 
     def get_recipes(self, obj):
         request = self.context.get('request')

@@ -9,7 +9,7 @@ services:
       - ./.env
 
   backend:
-    image: belinskii1/backend:v2
+    image: belinskii1/backend:v10
     restart: always
     volumes:
       - static_value:/code/static/

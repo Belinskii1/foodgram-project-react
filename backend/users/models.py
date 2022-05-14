@@ -3,6 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ('username',)
     username = models.CharField(
         max_length=25,
         unique=True,
@@ -25,9 +27,6 @@ class User(AbstractUser):
         blank=True,
         verbose_name='Фамилия'
     )
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username',)
 
     class Meta:
         ordering = ['id']
