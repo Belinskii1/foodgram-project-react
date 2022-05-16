@@ -107,7 +107,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.127.0.0.1',
     'https://*foodgrambelinskii1.ddns.net',
     'https://*51.250.107.141',
-    'https://foodgrambelinskii1.ddns.net'
+    'https://foodgrambelinskii1.ddns.net',
+    'http://foodgrambelinskii1.ddns.net',
+    'http://*foodgrambelinskii1.ddns.net',
+    'http://*51.250.107.141',
+    '*'
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
