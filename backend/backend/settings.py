@@ -102,7 +102,12 @@ DATABASES = {
     }
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost', 'https://*.127.0.0.1', 'foodgrambelinskii1.ddns.net']
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost',
+    'https://*.127.0.0.1',
+    'https://*foodgrambelinskii1.ddns.net',
+    'https://*51.250.107.141'
+]
 
 
 # Password validation
