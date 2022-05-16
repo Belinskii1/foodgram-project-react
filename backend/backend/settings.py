@@ -106,9 +106,11 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
     'https://*.127.0.0.1',
     'https://*foodgrambelinskii1.ddns.net',
-    'https://*51.250.107.141'
+    'https://*51.250.107.141',
+    'https://*foodgrambelinskii1.ddns.net'
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
