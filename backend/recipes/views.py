@@ -12,7 +12,7 @@ from .models import (Favorite, Ingredient, IngredientRecipe,
 from .pagination import RecipePagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (IngredientSerializer, RecipeSerializer,
-                           TagSerializer, FavoriteSerializers)
+                          TagSerializer, FavoriteSerializers)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):

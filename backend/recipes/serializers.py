@@ -3,8 +3,8 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 
 from users.serializers import CustomUserSerializer
-from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
-                     ShoppingCart, Tag)
+from .models import (Favorite, Ingredient, IngredientRecipe,
+                     Recipe, Tag)
 
 
 # class TagSerializer(serializers.ModelSerializer):
