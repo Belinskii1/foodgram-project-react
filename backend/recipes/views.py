@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .filters import IngredientSearchFilter, RecipeFilter
+from .filters import IngredientSearchFilter, AuthorAndTagFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                      ShoppingCart, Tag)
 from .pagination import RecipePagination
@@ -33,7 +33,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = RecipePagination
-    filter_class = RecipeFilter
+    filter_class = AuthorAndTagFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
     def get_serializer_class(self):
