@@ -53,7 +53,7 @@ class AuthorAndTagFilter(FilterSet):
         )
         if is_favorited:
             return queryset.filter(
-                favorites__user=self.request.user
+                favorite__user=self.request.user
             ).distinct()
         return queryset
 
@@ -66,6 +66,6 @@ class AuthorAndTagFilter(FilterSet):
         )
         if is_in_shopping_cart:
             return queryset.filter(
-                cart__user=self.request.user
+                shoppingcart__user=self.request.user
             ).distinct()
         return queryset
