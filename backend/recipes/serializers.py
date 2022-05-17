@@ -278,7 +278,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         user = self.context.get('request').user
         if user.is_anonymous:
             return False
-        return Recipe.objects.filter(cart__user=user, id=obj.id).exists()
+        return Recipe.objects.filter(shoppingcart__user=user, id=obj.id).exists()
 
     def create(self, validated_data):
         request = self.context.get('request')
