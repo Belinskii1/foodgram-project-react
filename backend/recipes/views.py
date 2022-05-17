@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .filters import IngredientSearchFilter, AuthorAndTagFilter
+from .filters import IngredientSearchFilter, RecipeFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                      ShoppingCart, Tag)
 from .pagination import RecipePagination
@@ -35,7 +35,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     # serializer_class = RecipeSerializer
     pagination_class = RecipePagination
     filter_backends = [DjangoFilterBackend]
-    filter_class = AuthorAndTagFilter
+    filterset_class = RecipeFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
     def get_serializer_class(self):
