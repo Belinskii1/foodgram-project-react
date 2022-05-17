@@ -35,13 +35,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request.user.is_authenticated:
             return Favorite.objects.filter(user=request.user,
-                                           recipe=obj).exists()
+                                           recipe=obj.id).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
         if request.user.is_authenticated:
             return ShoppingCart.objects.filter(user=request.user,
-                                               recipe=obj).exists()
+                                               recipe=obj.id).exists()
 
 
 class IngredientWriteSerializer(serializers.ModelSerializer):
