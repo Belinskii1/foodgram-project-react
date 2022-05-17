@@ -4,6 +4,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import IngredientSearchFilter, AuthorAndTagFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Recipe,
@@ -31,8 +32,9 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    # serializer_class = RecipeSerializer
     pagination_class = RecipePagination
+    filter_backends = [DjangoFilterBackend]
     filter_class = AuthorAndTagFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
