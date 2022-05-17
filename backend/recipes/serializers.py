@@ -32,7 +32,7 @@ class IngredientQuantitySerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
-    ingredients = IngredientSerializer(many=True)
+    ingredients = serializers.SerializerMethodField(read_only=True)
     author = CustomUserSerializer(read_only=True)
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
