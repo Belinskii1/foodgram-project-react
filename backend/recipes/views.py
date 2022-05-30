@@ -32,13 +32,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    # serializer_class = RecipeSerializer
     pagination_class = RecipePagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = RecipeFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
     def get_serializer_class(self):
+        """разделяет типы запросов на списковые и одиночные"""
         if self.action in ('list', 'retrieve'):
             return RecipeSerializer
         return RecipeWriteSerializer
@@ -46,6 +46,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(methods=['post', 'delete'], detail=True,
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk):
+        """добавляет или удаляет рецепт в избранном"""
         if request.method == 'POST':
             data = {'user': request.user.id, 'recipe': pk}
             serializer = FavoriteRecipeSerializer(
@@ -68,6 +69,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(methods=['post', 'delete'], detail=True,
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk):
+        """добавляет или удаляет рецепт в корзине"""
         if request.method == 'POST':
             data = {'user': request.user.id, 'recipe': pk}
             serializer = ShoppingCartSerializer(
@@ -89,6 +91,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
+        """скачивает список ингридиентов из рецептов в корзине"""
         ingredients = IngredientRecipe.objects.filter(
             recipe__shoppingcart__user=request.user).values(
             'ingredient__name', 'ingredient__measurement_unit', 'amount'
