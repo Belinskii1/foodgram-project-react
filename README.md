@@ -104,8 +104,5 @@ sudo docker-compose up -d --build
     ```
     - Проект будет доступен по вашему IP
 
-## Проект в интернете
-Проект запущен и доступен по [адресу](http://foodgrambelinskii1.ddns.net)
-
 ### Автор:
 Семенюк Александр [belinskii1](https://github.com/Belinskii1)
